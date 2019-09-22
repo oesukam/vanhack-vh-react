@@ -2,12 +2,12 @@ import { alertConstants } from '../constants';
 
 const success = message => ({
   type: alertConstants.SUCCESS,
-  payload: message
+  message
 });
 
 const error = message => ({
   type: alertConstants.ERROR,
-  payload: message
+  message
 });
 
 const clear = () => ({
