@@ -11,7 +11,7 @@ import RegisterPage from './components/RegisterPage';
 import NotFoundPage from './components/NotFoundPage';
 import { authentication } from './reducers/authentication.reducer';
 
-export class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,7 +24,7 @@ export class App extends React.Component {
     return (
       <Router history={history}>
         <div className="container">
-          <div className="col-sm-8 col-sm-offset-2">
+          <div className="col-sm-8 coßl-sm-offset-2">
             {alert.type === 'alert-danger' && (
               <div className="alert alert-danger">
                 <p>{alert.message}</p>
@@ -36,22 +36,19 @@ export class App extends React.Component {
                 <p>{alert.message}</p>
               </div>
             )}
-            <Switch>
-              <PrivateRoute exact path="/" component={HomePage} />
-              <PublicRoute
-                exact
-                path="/register"
-                loggedIn={loggedIn}
-                component={RegisterPage}
-              />
-              <PublicRoute
-                exact
-                path="/login"
-                loggedIn={loggedIn}
-                component={LoginPage}
-              />
-              <Route path="*" component={NotFoundPage} />
-            </Switch>
+            <PrivateRoute exact path="/" component={HomePage} />
+            <PublicRoute
+              exact
+              path="/register"
+              loggedIn={loggedIn}
+              component={RegisterPage}
+            />
+            <PublicRoute
+              exact
+              path="/login"
+              loggedIn={loggedIn}
+              component={LoginPage}
+            />
           </div>
         </div>
       </Router>
@@ -64,4 +61,14 @@ const mapStateToProps = ({ alert, authentication: { loggedIn } }) => ({
   loggedIn
 });
 
-export default connect(mapStateToProps)(App);
+App.defaultProps = {
+  alert: {
+    type: '',
+    message: ''
+  },
+  loggedIn: false
+};
+
+const AppConnected = connect(mapStateToProps)(App);
+
+export { AppConnected as App };

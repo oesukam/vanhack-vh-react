@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { userActions } from '../actions';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 export class RegisterPage extends Component {
   constructor(props) {
@@ -43,7 +42,6 @@ export class RegisterPage extends Component {
 
   render() {
     const { user, submitted } = this.state;
-    const { registering } = this.props;
     return (
       <div className="col-md-6 col-md-offset-3">
         <h2>Register</h2>
@@ -72,7 +70,7 @@ export class RegisterPage extends Component {
             <label htmlFor="password">Password</label>
             <input
               type="password"
-              className="form-control"
+              className="form-control password"
               name="password"
               onChange={this.handleChange}
             />
@@ -87,7 +85,6 @@ export class RegisterPage extends Component {
             >
               Register
             </button>
-            {registering && <CircularProgress size={20} color="secondary" />}
             <Link to="/login" className="btn btn-link">
               Cancel
             </Link>
@@ -99,15 +96,9 @@ export class RegisterPage extends Component {
 }
 
 // complete the below function
-const mapStateToProps = ({
-  registration: { registering },
-  alert: { type, message }
-}) => ({
-  registering,
-  message,
-  type
-});
 
-export { RegisterPage as TestRegisterPage };
+const RegisterPageConnected = connect()(RegisterPage);
 
-export default connect(mapStateToProps)(RegisterPage);
+export { RegisterPageConnected as TestRegisterPage };
+
+export default RegisterPageConnected;

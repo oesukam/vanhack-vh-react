@@ -15,7 +15,6 @@ const login = (username, password) => {
       userService
         .login(username, password)
         .then(user => {
-          localStorage.setItem('user', JSON.stringify({ username }));
           dispatch(success(user));
           history.push('/');
           resolve();

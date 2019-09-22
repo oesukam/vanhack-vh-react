@@ -63,7 +63,7 @@ export class LoginPage extends Component {
             <label htmlFor="password">Password</label>
             <input
               type="password"
-              className="form-control"
+              className="form-control password"
               name="password"
               onChange={this.handleChange}
             />
@@ -85,6 +85,8 @@ export class LoginPage extends Component {
   }
 }
 
-export { LoginPage as TestLoginPage };
+const LoginPageConnected = connect()(LoginPage);
 
-export default connect()(LoginPage);
+export { LoginPageConnected as TestLoginPage };
+
+export default LoginPageConnected;
