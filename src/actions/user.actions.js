@@ -32,12 +32,8 @@ const login = (username, password) => {
 const logout = () => {
   // complete this function
   const success = () => ({ type: userConstants.LOGOUT });
-
-  return dispatch => {
-    userService.logout().then(() => {
-      dispatch(success());
-    });
-  };
+  userService.logout();
+  return success();
 };
 
 const register = user => {
