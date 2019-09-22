@@ -19,6 +19,10 @@ const login = (username, password) => {
 
 const logout = () => {
   // remove user from local storage to log user out
+  return new Promise(resolve => {
+    localStorage.removeItem('user');
+    resolve();
+  });
 };
 
 const register = user => {

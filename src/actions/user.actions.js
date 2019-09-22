@@ -15,8 +15,8 @@ const login = (username, password) => {
       userService
         .login(username, password)
         .then(user => {
-          dispatch(success(user));
           localStorage.setItem('user', JSON.stringify({ username }));
+          dispatch(success(user));
           history.push('/');
           resolve();
         })
@@ -31,6 +31,13 @@ const login = (username, password) => {
 
 const logout = () => {
   // complete this function
+  const success = () => ({ type: userConstants.LOGOUT });
+
+  return dispatch => {
+    userService.logout().then(() => {
+      dispatch(success());
+    });
+  };
 };
 
 const register = user => {
