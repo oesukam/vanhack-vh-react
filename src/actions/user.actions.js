@@ -4,10 +4,29 @@ import { alertActions } from './';
 import { history } from '../helpers';
 
 const login = (username, password) => {
+  const user = { username, password };
   // return the promise using fetch which adds to localstorage on resolve
-  // const request = user => ({ type: userConstants.LOGIN_REQUEST, user });
-  // const success = user => ({ type: userConstants.LOGIN_SUCCESS, user });
-  // const failure = error => ({ type: userConstants.LOGIN_FAILURE, error });
+  const request = user => ({ type: userConstants.LOGIN_REQUEST, user });
+  const success = user => ({ type: userConstants.LOGIN_SUCCESS, user });
+  const failure = error => ({ type: userConstants.LOGIN_FAILURE, error });
+  return dispatch => {
+    dispatch(request(user));
+    return new Promise((resolve, reject) => {
+      userService
+        .login(username, password)
+        .then(user => {
+          dispatch(success(user));
+          localStorage.setItem('user', JSON.stringify({ username }));
+          history.push('/');
+          resolve();
+        })
+        .catch(error => {
+          dispatch(alertActions.error(error));
+          dispatch(failure(error));
+          reject();
+        });
+    });
+  };
 };
 
 const logout = () => {
@@ -28,7 +47,6 @@ const register = user => {
         .then(user => {
           dispatch(alertActions.success('Registration successful'));
           dispatch(success(user));
-          localStorage.setItem('user', user);
           history.push('/login');
           resolve();
         })

@@ -1,12 +1,15 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { PrivateRoute } from './PrivateRoute.js';
+import { PrivateRoute } from './PrivateRoute';
+import { PublicRoute } from './PublicRoute';
 import { history } from './helpers';
 // import { alertActions } from './actions';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import NotFoundPage from './components/NotFoundPage';
+import { authentication } from './reducers/authentication.reducer';
 
 export class App extends React.Component {
   constructor(props) {
@@ -17,8 +20,7 @@ export class App extends React.Component {
   }
 
   render() {
-    const { alert } = this.props;
-    console.log(alert, '====');
+    const { alert, loggedIn } = this.props;
     return (
       <Router history={history}>
         <div className="container">
@@ -36,8 +38,19 @@ export class App extends React.Component {
             )}
             <Switch>
               <PrivateRoute exact path="/" component={HomePage} />
-              <Route path="/register" component={RegisterPage} />
-              <Route path="/login" component={LoginPage} />
+              <PublicRoute
+                exact
+                path="/register"
+                loggedIn={loggedIn}
+                component={RegisterPage}
+              />
+              <PublicRoute
+                exact
+                path="/login"
+                loggedIn={loggedIn}
+                component={LoginPage}
+              />
+              <Route path="*" component={NotFoundPage} />
             </Switch>
           </div>
         </div>
@@ -46,8 +59,9 @@ export class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ alert }) => ({
-  alert
+const mapStateToProps = ({ alert, authentication: { loggedIn } }) => ({
+  alert,
+  loggedIn
 });
 
 export default connect(mapStateToProps)(App);
