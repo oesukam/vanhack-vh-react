@@ -3,28 +3,46 @@ import { userService } from '../services';
 import { alertActions } from './';
 import { history } from '../helpers';
 
-export const userActions = {
-    login,
-    logout,
-    register
+const login = (username, password) => {
+  // return the promise using fetch which adds to localstorage on resolve
+  // const request = user => ({ type: userConstants.LOGIN_REQUEST, user });
+  // const success = user => ({ type: userConstants.LOGIN_SUCCESS, user });
+  // const failure = error => ({ type: userConstants.LOGIN_FAILURE, error });
 };
 
-function login(username, password) {
-    // return the promise using fetch which adds to localstorage on resolve
+const logout = () => {
+  // complete this function
+};
 
-    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
-    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
-}
+const register = user => {
+  // return the promise using fetch which dispatches appropriately
+  const request = user => ({ type: userConstants.REGISTER_REQUEST, user });
+  const success = user => ({ type: userConstants.REGISTER_SUCCESS, user });
+  const failure = error => ({ type: userConstants.REGISTER_FAILURE, error });
 
-function logout() {
-    // complete this function
-}
+  return dispatch => {
+    dispatch(request(user));
+    return new Promise((resolve, reject) => {
+      userService
+        .register(user)
+        .then(user => {
+          dispatch(alertActions.success('Registration successful'));
+          dispatch(success(user));
+          localStorage.setItem('user', user);
+          history.push('/login');
+          resolve();
+        })
+        .catch(error => {
+          dispatch(alertActions.error(error));
+          dispatch(failure(error));
+          reject();
+        });
+    });
+  };
+};
 
-function register(user) {
-    // return the promise using fetch which dispatches appropriately 
-
-    function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
-    function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
-    function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
-}
+export const userActions = {
+  login,
+  logout,
+  register
+};
