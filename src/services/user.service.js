@@ -14,6 +14,7 @@ const login = (username, password) => {
   };
 
   // call `/users/authenticate` with requestOptions to authenticate the login process
+  localStorage.setItem('user', JSON.stringify({ username }));
   return fetch('/users/authenticate', requestOptions).then(handleResponse);
 };
 
